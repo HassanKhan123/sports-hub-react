@@ -3,23 +3,27 @@ import { connect } from "react-redux";
 import swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import firebase from "../../config/firebase";
-import M from "materialize-css";
+// import M from 'materialize-css';
+// import M from "materialize-css";
 // import 'bootstrap/dist/css/bootstrap.min.css'
 // import 'materialize-css/dist/css/materialize.min.css'
-// import "../../config/materialize";
+import "../../config/materialize";
+// import $ from 'jquery'
 // import $ from "jquery";
 
 class AddProduct extends Component {
   state = {
     productName: "",
-    price: "",
+    price: 0,
     productImage: "",
     category: "cricket",
     loading: false
   };
 
-  constructor() {}
-  
+  componentDidMount(){
+   
+
+  }
 
   logout = async () => {
     this.setState({ loading: true });
@@ -72,7 +76,7 @@ class AddProduct extends Component {
       category
     };
 
-    if (productName === "" || price === "") {
+    if (productName === "" || price === 0) {
       swal.fire("Error", "Please fill all the fields", "error");
     } else {
       try {
@@ -86,7 +90,7 @@ class AddProduct extends Component {
         this.setState({
           loading: false,
           productName: "",
-          price: "",
+          price: 0,
           productImage: ""
         });
         swal.fire("Success", "Product Added Successfully", "success");
@@ -95,13 +99,14 @@ class AddProduct extends Component {
         this.setState({
           loading: false,
           productName: "",
-          price: "",
+          price: 0,
           productImage: ""
         });
       }
     }
   };
   render() {
+   
     const { productName, price } = this.state;
     return (
       <div>
@@ -160,7 +165,7 @@ class AddProduct extends Component {
                   </div>
                 </div>
                 <div className="row">
-                  <div className="input-field col s12">
+                  {/* <div className="input-field col s12"> */}
                     <select onChange={this.selectChangeHandler}>
                       <option value="" disabled>
                         Product Category
@@ -170,7 +175,7 @@ class AddProduct extends Component {
                       <option value="hockey">Hockey</option>
                     </select>
                     <label>Select Product Category</label>
-                  </div>
+                  {/* </div> */}
                 </div>
 
                 <div className="row">

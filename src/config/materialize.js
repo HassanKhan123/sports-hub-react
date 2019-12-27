@@ -1,6 +1,9 @@
-// import M from 'materialize-css'
-// document.addEventListener('DOMContentLoaded', function() {
-//     var elems = document.querySelectorAll('select');
-//     var instances = M.FormSelect.init(elems);
-//   });
-// import 'materialize-css/dist/js/materialize'
+import M from 'materialize-css';
+// import $ from 'jquery'
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems);
+  });
+//   $(document).ready(function() {
+//     $('select').formSelect();
+// });

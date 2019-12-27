@@ -370,11 +370,14 @@ class Home extends Component {
                   All Products
                 </h3>
                 {this.state.loading ? (
+                  <div style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
                   <img
                     src={require("../../assets/images/spinner.gif")}
                     width="100"
-                    style={{ position: "absolute", top: 270, left: 630 }}
+                  
                   />
+                  </div>
+                  
                 ) : null}
                 {show}
               </div>

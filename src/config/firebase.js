@@ -93,6 +93,7 @@ const addProduct = async (credentials,vendorID) => {
       const url=await uploadImage(credentials.productImage,'productPictures/');
       credentials.productImage=url;
       credentials.companyName= getName.data().companyName;
+      credentials.price = Number(credentials.price);
       console.log(credentials)
       await saveDocument('vendors',vendorID,credentials)
       return credentials
