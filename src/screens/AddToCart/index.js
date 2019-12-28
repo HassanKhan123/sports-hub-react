@@ -1,29 +1,54 @@
 import React, { Component } from "react";
 import * as firebase from "firebase";
+import StripeCheckout from "react-stripe-checkout";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { toast } from "react-toastify";
 import { connect } from "react-redux";
-
 import Header from "../../components/Header";
+toast.configure();
+
 class AddToCart extends Component {
   state = {
     cartItems: [],
     cartLength: 0,
     loading: true,
-    cost: 0
+    cost: 0,
   };
+  handleToken = async (token,addresses) => {
+    const {cost} = this.state;
+    const response = await axios.post(
+      "http://localhost:8080/checkout",
+      { token,cost }
+    );
+    const { status } = response.data;
+    console.log("Response:", response.data);
+    if (status === "success") {
+      toast("Success! Your items will be delievered to you in 2 buisness days", { type: "success" });
+      this.setState({cartItems:[]});
+      await firebase.firestore().collection('users').doc(this.props.userID).set({
+        cartItems:[]
+      },{merge:true})
+      this.props.paymentDone();
+      this.props.history.replace('/');
+    } else {
+      toast("Something went wrong", { type: "error" });
+    }
+  }
   async componentDidMount() {
     const data = await firebase
       .firestore()
       .collection("users")
       .doc(this.props.userID)
       .get();
-    
-    data.data().cartItems.map(cartItem=>{
-      console.log(this.state.cost)
-    return this.setState({
-        cost:this.state.cost+cartItem.productPrice      
-      })
-    })
-    console.log(data.data().cartItems)
+
+    data.data().cartItems.map(cartItem => {
+      console.log(this.state.cost);
+      return this.setState({
+        cost: this.state.cost + cartItem.productPrice
+      });
+    });
+    console.log(data.data().cartItems);
     this.setState({
       cartItems: [...this.state.cartItems, data.data().cartItems],
       cartLength: data.data().cartItems.length,
@@ -37,7 +62,6 @@ class AddToCart extends Component {
       this.state.cartLength !== 0 ? (
         this.state.cartItems.map(item => {
           return item.map(i => {
-           
             return (
               <li className="collection-item avatar" key={Math.random()}>
                 <img src={i.productImage} alt="" className="circle" />
@@ -75,7 +99,14 @@ class AddToCart extends Component {
             {this.state.cartLength !== 0 ? (
               <div className="center">
                 <p>Total Cost is {this.state.cost}</p>
-                <button className="btn btn-info">Pay</button>
+                <StripeCheckout
+                  stripeKey="pk_test_f2BZQ4UzVo87lJJGHeHirViw00IkyuJdti"
+                  token={this.handleToken}
+                  billingAddress
+                  shippingAddress
+                  amount={this.state.cost*100}
+                
+                />
               </div>
             ) : null}
           </ul>
@@ -87,8 +118,15 @@ class AddToCart extends Component {
 
 const mapStateToProps = state => {
   return {
-    userID: state.userReducer.userID
+    userID: state.userReducer.userID,
+    cartProduct:state.userReducer.cartProduct
   };
 };
 
-export default connect(mapStateToProps, {})(AddToCart);
+const mapDispatchToProps = dispatch => {
+  return{
+    paymentDone: () => dispatch({type:'PAYMENT_DONE'})
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddToCart);

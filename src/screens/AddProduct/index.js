@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import firebase from "../../config/firebase";
+import Select from "react-select";
 // import M from 'materialize-css';
 // import M from "materialize-css";
 // import 'bootstrap/dist/css/bootstrap.min.css'
@@ -20,10 +21,7 @@ class AddProduct extends Component {
     loading: false
   };
 
-  componentDidMount(){
-   
-
-  }
+  componentDidMount() {}
 
   logout = async () => {
     this.setState({ loading: true });
@@ -47,10 +45,12 @@ class AddProduct extends Component {
     }
   };
 
-  selectChangeHandler = e => {
+  selectChangeHandler = category => {
+    console.log(category)
     this.setState({
-      category: e.target.value
+      category:category.value
     });
+
   };
 
   changeHandler = e => {
@@ -106,7 +106,6 @@ class AddProduct extends Component {
     }
   };
   render() {
-   
     const { productName, price } = this.state;
     return (
       <div>
@@ -165,17 +164,27 @@ class AddProduct extends Component {
                   </div>
                 </div>
                 <div className="row">
-                  {/* <div className="input-field col s12"> */}
-                    <select onChange={this.selectChangeHandler}>
+                  <div className="input-field col s12">
+                    <Select
+                      value={this.state.category}
+                      onChange={this.selectChangeHandler}
+                      options={[
+                       
+                        { value: "cricket", label: "Cricket" },
+                        { value: "hockey", label: "Hockey" },
+                        { value: "football", label: "Football" }
+                      ]}
+                    />
+                    {/* <select onChange={this.selectChangeHandler}>
                       <option value="" disabled>
                         Product Category
                       </option>
                       <option value="cricket">Cricket</option>
                       <option value="football">Football</option>
                       <option value="hockey">Hockey</option>
-                    </select>
-                    <label>Select Product Category</label>
-                  {/* </div> */}
+                    </select> */}
+                    {/* <label>Select Product Category</label> */}
+                  </div>
                 </div>
 
                 <div className="row">

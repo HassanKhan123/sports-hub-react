@@ -9,5 +9,11 @@
 .search{
     width:50%;
     margin:0 auto ;
-    height:45px
+    height:75px
+}
+
+.select{
+    width:120px;
+    color:black;
+
 }

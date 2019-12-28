@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import swal from "sweetalert2";
+import Select from 'react-select'
+// import {Form} from 'materialize-css'
 import * as firebase from "firebase";
 import db from "../../config/firebase";
 import M from "materialize-css";
@@ -15,7 +17,7 @@ class Home extends Component {
     productsFetched: [],
     search: "",
     searchProducts: [],
-    categorySearch: "cricket"
+    categorySearch: "cricket",
   };
 
   cart = async (item, index) => {
@@ -76,6 +78,7 @@ class Home extends Component {
   };
 
   async componentDidMount() {
+    console.log(this.props.history);
     try {
       await firebase
         .firestore()
@@ -120,10 +123,14 @@ class Home extends Component {
     // this.props.cartProducts.push(items.data().cartItems);
   }
 
-  searchChangeHandler = e => {
+  searchNameHandler = (e) => {
     this.setState({
-      [e.target.id]: e.target.value
-    });
+
+      [e.target.id] : e.target.value
+    })
+  }
+  searchChangeHandler = categorySearch => {
+    this.setState({categorySearch});
   };
 
   searchHandler = async e => {
@@ -131,7 +138,7 @@ class Home extends Component {
     console.log("form");
     this.setState({ loading: true, searchProducts: [] });
     if (this.state.search === "") {
-      this.setState({ searchProducts: [],loading:false });
+      this.setState({ searchProducts: [], loading: false });
     } else {
       await firebase
         .firestore()
@@ -144,7 +151,7 @@ class Home extends Component {
               .collection("vendors")
               .doc(data.id)
               .collection("products")
-              .where("category", "==", this.state.categorySearch)
+              .where("category", "==", this.state.categorySearch.value)
               .where("productName", "==", this.state.search)
               .get()
               .then(snapShot => {
@@ -164,10 +171,10 @@ class Home extends Component {
   };
 
   render() {
-    document.addEventListener("DOMContentLoaded", function() {
-      var elems = document.querySelectorAll("select");
-      var instances = M.FormSelect.init(elems);
-    });
+    // document.addEventListener("DOMContentLoaded", function() {
+    //   var elems = document.querySelectorAll("select");
+    //   var instances = M.FormSelect.init(elems);
+    // });
 
     const featuerd = (
       <div style={{ alignSelf: "center" }}>
@@ -200,8 +207,8 @@ class Home extends Component {
     const { search } = this.state;
     const show = this.state.productsFetched.map((item, index) => {
       return (
-        <div>
-          <div className="col s12 l4" key={Math.random()}>
+        <div key={Math.random()}>
+          <div className="col s12 l4">
             <div className="card">
               <div className="card-image">
                 <img src={item.productImage} width="100" />
@@ -311,29 +318,41 @@ class Home extends Component {
                 <div className="row">
                   <label
                     className="label-icon col s2 center"
-                    style={{ marginTop: -8 }}
+                    style={{ marginTop: 8 }}
                     htmlFor="search"
                     onClick={this.searchHandler}
                   >
                     <i className="material-icons">search</i>
                   </label>
                   <div className="input-field col s2">
-                    <select
-                      onChange={this.searchChangeHandler}
-                      id="categorySearch"
+                    <Select className="select"
+                    value={this.state.selectedOption}
+                    onChange={this.searchChangeHandler}
+                    options={
+                      [{value:"cricket",label:'Cricket'},
+                      {value:"hockey",label:'Hockey'},
+                      {value:"football",label:'Football'},
+                      ]
+                    }
+                    
+                    />
+                    {/* <select
+                      defaultValue="cricket"
+                      
                     >
+                      <option value="" disabled selected>Select Category</option>
                       <option value="cricket">Cricket</option>
                       <option value="football">Football</option>
                       <option value="hockey">Hockey</option>
-                    </select>
+                    </select> */}
                   </div>
-                  <div className="input-field col s5" style={{ marginTop: 8 }}>
+                  <div className="input-field col s5" style={{ marginTop: 22 }}>
                     <input
                       id="search"
                       type="search"
                       value={search}
                       placeholder="Search Products by Name"
-                      onChange={this.searchChangeHandler}
+                      onChange={this.searchNameHandler}
                     />
                   </div>
                 </div>
@@ -370,14 +389,18 @@ class Home extends Component {
                   All Products
                 </h3>
                 {this.state.loading ? (
-                  <div style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
-                  <img
-                    src={require("../../assets/images/spinner.gif")}
-                    width="100"
-                  
-                  />
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                  >
+                    <img
+                      src={require("../../assets/images/spinner.gif")}
+                      width="100"
+                    />
                   </div>
-                  
                 ) : null}
                 {show}
               </div>

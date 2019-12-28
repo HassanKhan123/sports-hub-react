@@ -19,6 +19,11 @@ const reducer = (state=initialState,action) => {
                 userID:'',
                 isUser:false
             }
+        case 'PAYMENT_DONE':
+            return{
+                ...state,
+                cartProduct:[]
+            }
        
         default:
             return state
