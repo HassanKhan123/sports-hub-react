@@ -18,6 +18,7 @@ class AddProduct extends Component {
     price: 0,
     productImage: "",
     category: "cricket",
+    rating:0,
     loading: false
   };
 
@@ -68,12 +69,13 @@ class AddProduct extends Component {
   submitHandler = async e => {
     e.preventDefault();
     console.log(this.state);
-    const { productName, price, productImage, category } = this.state;
+    const { productName, price, productImage, category,rating } = this.state;
     const credientials = {
       productName,
       price,
       productImage,
-      category
+      category,
+      rating
     };
 
     if (productName === "" || price === 0) {

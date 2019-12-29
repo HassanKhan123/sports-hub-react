@@ -26,11 +26,8 @@ class AddToCart extends Component {
     if (status === "success") {
       toast("Success! Your items will be delievered to you in 2 buisness days", { type: "success" });
       this.setState({cartItems:[]});
-      await firebase.firestore().collection('users').doc(this.props.userID).set({
-        cartItems:[]
-      },{merge:true})
-      this.props.paymentDone();
-      this.props.history.replace('/');
+      
+      this.props.history.replace('/rating');
     } else {
       toast("Something went wrong", { type: "error" });
     }
@@ -123,10 +120,6 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return{
-    paymentDone: () => dispatch({type:'PAYMENT_DONE'})
-  }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddToCart);
+
+export default connect(mapStateToProps)(AddToCart);

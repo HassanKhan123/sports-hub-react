@@ -18,6 +18,7 @@ class Home extends Component {
     search: "",
     searchProducts: [],
     categorySearch: "cricket",
+    ratedProducts:[]
   };
 
   cart = async (item, index) => {
@@ -29,7 +30,8 @@ class Home extends Component {
       productName: item.productName,
       productPrice: item.price,
       productCategory: item.category,
-      productImage: item.productImage
+      productImage: item.productImage,
+      productRating:item.rating
     };
     console.log(obj);
     console.log(this.props.cartProduct);
@@ -114,6 +116,18 @@ class Home extends Component {
               });
           });
         });
+
+        await firebase.firestore().collection('ratedItems').orderBy('productRating','desc').get().then(doc=>{
+          doc.docs.forEach(data=>{
+            console.log(data.data());
+            this.setState({
+              ratedProducts:[
+                ...this.state.ratedProducts,
+                data.data()
+              ]
+            })
+          })
+        })
     } catch (e) {
       swal.fire("Error", e.message, "error");
     }
@@ -236,6 +250,28 @@ class Home extends Component {
         </div>
       );
     });
+
+    const showRated = this.state.ratedProducts.map((item, index) => {
+      return (
+        <div key={Math.random()}>
+          <div className="col s12 l4">
+            <div className="card">
+              <div className="card-image">
+                <img src={item.productImage} width="100" />
+              </div>
+              <div className="card-content">
+                <p>Name: {item.productName}</p>
+                <p>Price: {item.productPrice}</p>
+                <p>Category: {item.productCategory}</p>
+                <p>Rating: {item.productRating}</p>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      );
+    });
+
 
     const showSearch = this.state.searchProducts.map((item, index) => {
       return (
@@ -376,15 +412,38 @@ class Home extends Component {
                 {featuerd}
               </div>
 
-              <div>
+              <div style={{width:'100%'}}>
                 <h3
-                  style={{
+            
+                >
+                  Rated Products
+                </h3>
+                {this.state.loading ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                  >
+                    <img
+                      src={require("../../assets/images/spinner.gif")}
+                      width="100"
+                    />
+                  </div>
+                ) : null}
+                {showRated}
+              </div>
+
+              <div style={{flex:1}}>
+                <h3
+                  /* style={{
                     backgroundColor: "black",
                     padding: 20,
                     color: "white",
                     opacity: 0.7,
                     textAlign: "center"
-                  }}
+                  }} */
                 >
                   All Products
                 </h3>
