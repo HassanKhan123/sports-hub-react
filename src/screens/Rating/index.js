@@ -116,7 +116,7 @@ class Rating extends Component {
             </li>
             {items}
             {this.state.ratedLength !== 0 ? (
-              <div className="center">
+              <div className="center" style={{margin:40}}>
                 <button onClick={this.rate} className="btn btn-success">Rate</button>
               </div>
             ) : null}

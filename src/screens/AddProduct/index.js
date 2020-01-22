@@ -168,7 +168,7 @@ class AddProduct extends Component {
                 <div className="row">
                   <div className="input-field col s12">
                     <Select
-                      value={this.state.category}
+                      value={this.state.category.label}
                       onChange={this.selectChangeHandler}
                       options={[
                        

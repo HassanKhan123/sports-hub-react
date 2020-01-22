@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import swal from "sweetalert2";
+
 import firebase from "../../config/firebase";
 import Header from "../../components/Header";
+
 
 import "../../index.css";
 import "./style.css";
 
-export default class Signin extends Component {
+class Signin extends Component {
   state = {
     firstname: "",
     lastname: "",
@@ -17,6 +19,8 @@ export default class Signin extends Component {
     confirmpassword: "",
     loading: false
   };
+
+  
 
   changeHandler = e => {
     this.setState({
@@ -99,7 +103,7 @@ export default class Signin extends Component {
       confirmpassword
     } = this.state;
     return (
-      <div style={{height:'100vh',backgroundColor:'#ACC99D'}}>
+      <div style={{ height: "100vh", backgroundColor: "#ACC99D" }}>
         <Header />
         {this.state.loading ? (
           <img
@@ -111,7 +115,7 @@ export default class Signin extends Component {
         <div className="center">
           <img
             src={require("../../assets/images/avatar.png")}
-            className="img"
+            className="image"
           />
           <div className="row">
             <div className="container">
@@ -124,7 +128,9 @@ export default class Signin extends Component {
                       value={firstname}
                       onChange={this.changeHandler}
                     />
-                    <label htmlFor="firstname" style={{color:'white'}}>First Name</label>
+                    <label htmlFor="firstname" style={{ color: "white" }}>
+                      First Name
+                    </label>
                   </div>
                   <div className="input-field col s6">
                     <input
@@ -133,7 +139,9 @@ export default class Signin extends Component {
                       value={lastname}
                       onChange={this.changeHandler}
                     />
-                    <label htmlFor="lastname" style={{color:'white'}}>Last Name</label>
+                    <label htmlFor="lastname" style={{ color: "white" }}>
+                      Last Name
+                    </label>
                   </div>
                 </div>
 
@@ -145,7 +153,9 @@ export default class Signin extends Component {
                       value={username}
                       onChange={this.changeHandler}
                     />
-                    <label htmlFor="username" style={{color:'white'}}>User Name</label>
+                    <label htmlFor="username" style={{ color: "white" }}>
+                      User Name
+                    </label>
                   </div>
                   <div className="input-field col s6">
                     <input
@@ -154,7 +164,9 @@ export default class Signin extends Component {
                       value={email}
                       onChange={this.changeHandler}
                     />
-                    <label htmlFor="email" style={{color:'white'}}>Email</label>
+                    <label htmlFor="email" style={{ color: "white" }}>
+                      Email
+                    </label>
                   </div>
                 </div>
 
@@ -166,7 +178,9 @@ export default class Signin extends Component {
                       value={password}
                       onChange={this.changeHandler}
                     />
-                    <label htmlFor="password" style={{color:'white'}}>Password</label>
+                    <label htmlFor="password" style={{ color: "white" }}>
+                      Password
+                    </label>
                   </div>
                   <div className="input-field col s6">
                     <input
@@ -175,17 +189,20 @@ export default class Signin extends Component {
                       value={confirmpassword}
                       onChange={this.changeHandler}
                     />
-                    <label htmlFor="confirmpassword" style={{color:'white'}}>Confirm Password</label>
+                    <label htmlFor="confirmpassword" style={{ color: "white" }}>
+                      Confirm Password
+                    </label>
                   </div>
                 </div>
 
-                <div className="center">
+                <div className="center" style={{ marginBottom: 2 }}>
                   <button className="btn green">Register</button>
                   <Link to="/login" className="link">
                     Already have an account? Login now
                   </Link>
                 </div>
               </form>
+              
             </div>
           </div>
         </div>
@@ -193,3 +210,5 @@ export default class Signin extends Component {
     );
   }
 }
+
+export default Signin

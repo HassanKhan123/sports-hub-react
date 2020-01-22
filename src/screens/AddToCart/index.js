@@ -18,7 +18,7 @@ class AddToCart extends Component {
   handleToken = async (token,addresses) => {
     const {cost} = this.state;
     const response = await axios.post(
-      "http://localhost:8080/checkout",
+      " https://stripe-paymnet-backend.herokuapp.com/checkout",
       { token,cost }
     );
     const { status } = response.data;

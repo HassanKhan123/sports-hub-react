@@ -31,7 +31,8 @@ class Home extends Component {
       productPrice: item.price,
       productCategory: item.category,
       productImage: item.productImage,
-      productRating:item.rating
+      productRating:item.rating,
+      productCompany:item.companyName
     };
     console.log(obj);
     console.log(this.props.cartProduct);
@@ -117,7 +118,7 @@ class Home extends Component {
           });
         });
 
-        await firebase.firestore().collection('ratedItems').orderBy('productRating','desc').get().then(doc=>{
+        await firebase.firestore().collection('ratedItems').orderBy('productRating','desc').limit(4).get().then(doc=>{
           doc.docs.forEach(data=>{
             console.log(data.data());
             this.setState({
@@ -192,9 +193,9 @@ class Home extends Component {
 
     const featuerd = (
       <div style={{ alignSelf: "center" }}>
-        <div className="col s12 l6" style={{ width: 500 }} key={Math.random()}>
+        <div className="col s12 m6 l4" style={{ width: 500 }} key={Math.random()}>
           <h4>Featured Product</h4>
-          <div className="card">
+          <div className="card small">
             <div className="card-image">
               <img src={this.props.featuredProducts.productImage} width="100" />
             </div>
@@ -222,8 +223,8 @@ class Home extends Component {
     const show = this.state.productsFetched.map((item, index) => {
       return (
         <div key={Math.random()}>
-          <div className="col s12 l4">
-            <div className="card">
+          <div className="col s12 m6 l3">
+            <div className="card" style={{marginLeft:20}}>
               <div className="card-image">
                 <img src={item.productImage} width="100" />
               </div>
@@ -254,8 +255,8 @@ class Home extends Component {
     const showRated = this.state.ratedProducts.map((item, index) => {
       return (
         <div key={Math.random()}>
-          <div className="col s12 l4">
-            <div className="card">
+          <div className="col s12 m6 l3">
+            <div className="card" style={{marginLeft:20}}>
               <div className="card-image">
                 <img src={item.productImage} width="100" />
               </div>
@@ -341,6 +342,11 @@ class Home extends Component {
                       </Link>
                     </li>
                   ) : null}
+                  {this.props.isUser?(
+                    <li>
+                      logged in as {this.props.userName}
+                    </li>
+                  ):null}
                 </ul>
               </div>
             </div>
@@ -413,12 +419,9 @@ class Home extends Component {
               </div>
 
               <div style={{width:'100%'}}>
-                <h3
-            
-                >
-                  Rated Products
-                </h3>
-                {this.state.loading ? (
+                {this.state.ratedProducts.length?<h4 style={{marginLeft:20}}>Rated Products</h4>:null}
+                
+                {/* {this.state.loading ? (
                   <div
                     style={{
                       display: "flex",
@@ -431,22 +434,14 @@ class Home extends Component {
                       width="100"
                     />
                   </div>
-                ) : null}
+                ) : null} */}
                 {showRated}
               </div>
 
               <div style={{flex:1}}>
-                <h3
-                  /* style={{
-                    backgroundColor: "black",
-                    padding: 20,
-                    color: "white",
-                    opacity: 0.7,
-                    textAlign: "center"
-                  }} */
-                >
+                <h4 style={{marginLeft:20}}>
                   All Products
-                </h3>
+                </h4>
                 {this.state.loading ? (
                   <div
                     style={{
@@ -476,6 +471,7 @@ const mapStateToProps = state => {
   return {
     isUser: state.userReducer.isUser,
     userID: state.userReducer.userID,
+    userName:state.userReducer.userName,
     cartProduct: state.userReducer.cartProduct,
     featuredProducts: state.vendorReducer.featuredProducts
   };

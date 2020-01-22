@@ -19,6 +19,7 @@ function loginHandler(email, password) {
           type: "LOGING_IN",
           payload: {
             uid: response.uid,
+            userName:response.firstName,
             cartItems:response.cartItems
           }
         });
@@ -29,6 +30,10 @@ function loginHandler(email, password) {
     }
   };
 }
+
+
+
+
 
 function loggingOut(){
     return async function(dispatch){
@@ -54,4 +59,5 @@ function loggingOut(){
 export default {
   loginHandler,
   loggingOut
+ 
 };
