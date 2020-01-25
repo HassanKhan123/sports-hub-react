@@ -147,43 +147,73 @@ const uploadImage = async (file, folderName) => {
   }
 };
 
-// var loginWithFb=async()=>{
-//   var provider = new firebase.auth.FacebookAuthProvider();
-//   try{
-//       var res=await firebase.auth().signInWithPopup(provider);
-//       // The signed-in user info.
-//       var user = res.user;
+var loginWithFb = async () => {
+  var provider = new firebase.auth.FacebookAuthProvider();
+  try {
+    var res = await firebase.auth().signInWithPopup(provider);
+    // The signed-in user info.
+    var user = res.user;
 
-//       var data=await firebase.firestore().collection('vendors').doc(user.uid).set({
-//           firstname:user.displayName,
-//           email:user.email,
-//           imageURL:user.photoURL
+    var data = await firebase
+      .firestore()
+      .collection("users")
+      .doc(user.uid)
+      .set({
+        firstname: user.displayName,
+        email: user.email,
+        imageURL: user.photoURL,
+        cartItems: []
+      });
+    var getData = await firebase
+      .firestore()
+      .collection("users")
+      .doc(user.uid)
+      .get();
+    console.log(getData.data());
+    // localStorage.setItem("uid",response.user.uid);
+    return { ...getData.data(), uid: user.uid };
+  } catch (e) {
+    console.log(e.message);
+  }
+};
 
-//       })
-//       console.log(user);
-//       console.log(user.displayName);
-//       console.log(user.photoURL);
+var loginWithGoogle = async () => {
+  var provider = new firebase.auth.GoogleAuthProvider();
+  try {
+    var res = await firebase.auth().signInWithPopup(provider);
+    // The signed-in user info.
+    var user = res.user;
 
-//       localStorage.setItem("loginUser",user.photoURL);
-//       localStorage.setItem("loginUserName",user.displayName);
-//       localStorage.setItem("info",JSON.stringify(user));
-//        localStorage.setItem("uid",user.uid);
-//       localStorage.setItem("login",JSON.stringify(1))
+    var data = await firebase
+      .firestore()
+      .collection("users")
+      .doc(user.uid)
+      .set({
+        firstname: user.displayName,
+        email: user.email,
+        imageURL: user.photoURL,
+        cartItems: []
+      });
 
-//       setTimeout(()=>{
-//           window.location.assign("pages/home.html")
-//       },2000);
-
-//   }catch(e){
-//       console.log(e.message);
-//   }
-
-// }
+    var getData = await firebase
+      .firestore()
+      .collection("users")
+      .doc(user.uid)
+      .get();
+    console.log(getData.data());
+    // localStorage.setItem("uid",response.user.uid);
+    return { ...getData.data(), uid: user.uid };
+  } catch (e) {
+    console.log(e.message);
+  }
+};
 export default {
   signInFirebase,
   signedInFirebase,
   logInFirebase,
   logedInFirebase,
   addProduct,
-  signOutFirebase
+  signOutFirebase,
+  loginWithFb,
+  loginWithGoogle
 };

@@ -78,7 +78,7 @@ class AddToCart extends Component {
         </li>
       );
     return (
-      <div>
+      <div style={{backgroundColor:"#F2F2F2",height:"100vh"}}>
         <Header />
         {this.state.loading ? (
           <img

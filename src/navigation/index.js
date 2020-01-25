@@ -10,6 +10,7 @@ import AddToCart from '../screens/AddToCart'
 import Rating from '../screens/Rating'
 import adminLogin from '../screens/adminLogin'
 import adminPanel from '../screens/adminPanel'
+import ProductsVendors from '../screens/ProductsVendors'
 
 
 const Navigation = () => {
@@ -26,6 +27,7 @@ const Navigation = () => {
                 <Route path="/rating" exact component={Rating} />
                 <Route path="/admin/login" exact component={adminLogin}/>
                 <Route path="/admin/adminPanel" exact component={adminPanel}/>
+                <Route path="/vendors/products" exact component={ProductsVendors}/>
 
 
 

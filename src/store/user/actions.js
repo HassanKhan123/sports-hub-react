@@ -54,10 +54,74 @@ function loggingOut(){
     }
 }
 
+function fbLoginHandler() {
+  return async function(dispatch) {
+    console.log("Fb logging in.....");
+    try {
+      var response = await firebase.loginWithFb();
+      console.log(response)
+     
+
+      if (response !== undefined) {
+        swal.fire(
+          "Successfully Login",
+          "You are now redirected to Home Page",
+          "success"
+        );
+
+        dispatch({
+          type: "FB_LOGING_IN",
+          payload: {
+            uid: response.uid,
+            userName:response.firstname,
+            cartItems:response.cartItems
+          }
+        });
+      }
+    } catch (e) {
+      swal.fire("Error", e.message, "error");
+      throw e
+    }
+  };
+}
+
+function googleLoginHandler() {
+  return async function(dispatch) {
+    console.log("Fb logging in.....");
+    try {
+      var response = await firebase.loginWithGoogle();
+      console.log(response)
+     
+
+      if (response !== undefined) {
+        swal.fire(
+          "Successfully Login",
+          "You are now redirected to Home Page",
+          "success"
+        );
+
+        dispatch({
+          type: "GOOGLE_LOGING_IN",
+          payload: {
+            uid: response.uid,
+            userName:response.firstname,
+            cartItems:response.cartItems
+          }
+        });
+      }
+    } catch (e) {
+      swal.fire("Error", e.message, "error");
+      throw e
+    }
+  };
+}
+
 
 
 export default {
   loginHandler,
-  loggingOut
+  loggingOut,
+  fbLoginHandler,
+  googleLoginHandler
  
 };

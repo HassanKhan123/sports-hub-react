@@ -100,7 +100,7 @@ class Rating extends Component {
           })
         : null;
     return (
-      <div>
+      <div style={{backgroundColor:"#F2F2F2",height:"100vh"}}>
         <Header />
         {this.state.loading ? (
           <img
